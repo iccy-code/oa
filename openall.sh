@@ -1,13 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ 0 -eq ${#} ]; then
 	exit
 fi
 
+Version="v1.0"
+
 if [ "${1}" = "version" ]; then
-	echo -e "Version \033[1;31m0.01\033[0m"
+	echo -e "Version \033[1;31m${Version}\033[0m"
 	exit
-elif [ "${1}" = "help" ];then
+elif [ "${1}" = "help" ]; then
 	echo -e "\033[1;31m$\033[0m oa <compressed-files>"
 	exit
 fi
@@ -77,6 +79,6 @@ Compress() {
 	Compress ${tmp}
 }
 
-cp ${1} tmp${1}
+cp ${1} "${1}.temp"
 Compress ${tmp}
-mv tmp${1} ${1}
+mv "${1}.temp" ${1}

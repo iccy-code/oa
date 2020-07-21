@@ -29,3 +29,16 @@ for binary in ${binList}; do
 	done
 	eval "if [ -z \"\$${binary}\" ]; then echo -e \"Please download the following tools to ensure normal use of the software:\n    \033[01;31mtar gzip bzip2 (n)compress xzip unrar unzip\033[0m\"; exit; fi"
 done
+
+# fileList=("tar" "gzip" "bzip2" "compress" "xz" "unrar" "unzip")
+# pathList="/bin /usr/bin /usr/local/bin"
+
+# # 好了, 得到可执行文件的绝对路径
+# for ((i=0; i<${#fileList[@]}; i++)); do
+# 	for path in ${pathList}; do
+# 		if [ -r ${path}/${fileList[i]} ]; then
+# 			fileList[i]=${path}/${fileList[i]}
+# 			break
+# 		fi
+# 	done
+# done
