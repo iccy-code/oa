@@ -4,15 +4,31 @@ if [ 0 -eq ${#} ]; then
 	exit
 fi
 
-Version="v1.0"
+Version='Copyright (c) iccy xxxx-xxxx, GPL Open Source Software.
+openall v1.5.'
 
 if [ "${1}" = "version" ]; then
-	echo -e "Version \033[1;31m${Version}\033[0m"
+	echo -e "${Version}"
 	exit
 elif [ "${1}" = "help" ]; then
 	echo -e "\033[1;31m$\033[0m oa <compressed-files>"
 	exit
 fi
+
+# 两个参数, 第一个是字符串, 第二个是字符, 返回字符串中字符出现的最后一个位置, 参数不对返回254, 未找到返回255
+LastIndexByte() {
+	if [ ${#} -ne 2 -a ${#1} -ne 0 -a ${#2} -eq 1 ]; then
+		return 254
+	fi
+
+	local i
+	for i in $(seq $((${#1}-1)) -1 -1); do
+		eval "if [ \${1:${i}:1} = ${2} ]; then
+			break
+		fi"
+	done
+	return $((${i}))
+}
 
 # gzip -d == gunzip
 # bzip2 -d == bunzip2
@@ -31,25 +47,23 @@ fi
 # .tar.Z
 
 tmp=${1}
-binList="tar gzip bzip2 compress xz unrar unzip"
 
 Compress() {
-	suffix=$(echo ${tmp} | egrep '\.[targzb2Zxrip]{1,3}$' -o)
+	LastIndexByte ${tmp} "."
+	local i=${?}
 
-	case ${suffix} in
+	case ${tmp:${i}} in
 	".tar")
-		tar -kxvf ${tmp}
+		tar -xvf ${tmp}
 		rm ${tmp}
-		return
 	;;
 	".gz")
-		gzip -vd ${tmp}
+		gzip -d ${tmp}
 	;;
 	".bz2")
-		bzip2 -vd ${tmp}
+		bzip2 -d ${tmp}
 	;;
 	".Z")
-		# echo ${suffix}098
 		compress -d ${tmp}
 	;;
 	".xz")
@@ -69,7 +83,7 @@ Compress() {
 	;;
 	esac
 
-	eval tmp="\${tmp%${suffix}}"
+	tmp=${tmp::${i}}
 	
 	if [ ! -e ${tmp} ]; then
 		echo "File does not exist"

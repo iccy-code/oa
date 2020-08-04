@@ -1,16 +1,16 @@
-CHMOD = chmod +x
-CP = cp
-ELFFILE = ./openall.sh
-TESTFILE = ./test.sh
-EXE = /bin/oa
+EXEFILE = openall.sh
+TESTFILE = test.sh
+
+EXEPATH = /bin
+EXE = oa
 
 default: install test
 
 install:
-	# @ if [ -x $(EXE) ]; then rm $(EXE); fi
-	@ $(CP) $(ELFFILE) $(EXE)
-	@ $(CHMOD) $(EXE)
+	@ if [ -f $(EXEPATH)/$(EXE) ]; then rm $(EXEPATH)/$(EXE); fi
+	@ cp $(EXEFILE) $(EXEPATH)/${EXE}
+	@ echo "--help"
+	@ oa help
 	
 test:
-	@ $(CHMOD) $(TESTFILE)
 	@ ./$(TESTFILE)
