@@ -1,23 +1,7 @@
 #!/bin/bash
 
 # 测试解压的软件是否存在
-
-# 1、*.tar 用 tar –xvf 解压 --> tar -cvf 压缩后的文件名 压缩前文件名
-# 2、*.gz 用 gzip -d或者gunzip 解压 --> gzip 压缩前文件名
-# 3、*.tar.gz和*.tgz 用 tar –xzf 解压 --> tar -zcf 压缩后的文件名 压缩前文件名
-# 4、*.bz2 用 bzip2 -d或者用bunzip2 解压 --> bzip2 -z 压缩前文件名
-# 5、*.tar.bz2用tar –xjf 解压 --> tar -jcf 压缩后的文件名 压缩前文件名
-# 6、*.Z 用 uncompress 解压 --> compress 压缩前文件名
-# 7、*.tar.Z 用tar –xZf 解压 --> tar -Zcf 压缩后的文件名 压缩前文件名
-# 8、*.rar 用 unrar e解压 --> rar a 压缩后的文件名 压缩前文件名
-# 9、*.zip 用 unzip 解压 --> zip -r 压缩后的文件名 压缩前文件名
-
 binList="tar gzip bzip2 compress xz unrar unzip ls grep wc rm chmod echo"
-# gzip -d == gunzip
-# bzip2 -d == bunzip2
-# compress -d == uncompress
-# xz -d == unxz
-
 pathList="/bin /usr/bin /usr/local/bin"
 
 for binary in ${binList}; do
