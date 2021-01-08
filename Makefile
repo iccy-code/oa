@@ -1,16 +1,13 @@
 EXEFILE = openall.sh
 TESTFILE = test.sh
 
-EXEPATH = /bin
-EXE = oa
+EXEC = /usr/bin/oa
 
-default: install test
+all: install
 
 install:
-	@ if [ -f $(EXEPATH)/$(EXE) ]; then rm $(EXEPATH)/$(EXE); fi
-	@ cp $(EXEFILE) $(EXEPATH)/${EXE}
-	@ echo "--help"
+	@ cp $(EXEFILE) ${EXEC}
 	@ oa help
 	
 test:
-	@ ./$(TESTFILE)
+	@ sh $(TESTFILE)

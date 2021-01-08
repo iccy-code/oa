@@ -1,31 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # 测试解压的软件是否存在
-binList="tar gzip bzip2 compress xz unrar unzip ls grep wc rm chmod echo"
-pathList="/bin /usr/bin /usr/local/bin"
+EXEC='tar gzip bzip2 xz unrar unzip compress'
 
-for binary in ${binList}; do
-	for path in ${pathList}; do
-		bin=${path}/${binary}
-		if [ -r ${bin} ]; then
-			break
-		fi
-	done
-	# eval "if [ -z \"\$${binary}\" ]; then echo -e \"Please download the following tools to ensure normal use of the software:\n    \033[01;31mtar gzip bzip2 (n)compress xzip unrar unzip\033[0m\"; exit; fi"
-	if [ ! -r ${bin} ]; then
-		echo -e "Please download the \033[01;31m${binary}\033[0m"
+for exec in ${EXEC}; do
+	type ${exec} &>/dev/null
+	if [ $? -eq 1 ]; then
+		printf "\033[01;31m%-20s%s\033[0m\n" ${exec} "Not installed"
+		continue
 	fi
+	printf "%-20s%s\n" $(which ${exec}) "Installed"
 done
 
-# fileList=("tar" "gzip" "bzip2" "compress" "xz" "unrar" "unzip")
-# pathList="/bin /usr/bin /usr/local/bin"
 
-# # 好了, 得到可执行文件的绝对路径
-# for ((i=0; i<${#fileList[@]}; i++)); do
-# 	for path in ${pathList}; do
-# 		if [ -r ${path}/${fileList[i]} ]; then
-# 			fileList[i]=${path}/${fileList[i]}
-# 			break
-# 		fi
-# 	done
-# done
+type oa &>/dev/null
+if [ $? -eq 0 ]; then
+	printf "\n\nThe executable file \033[01;31moa\033[0m already exists\nPlease modify the Makefile manually to change the executable file name or executable file path\n"
+else
+	printf "Run \"make install\" to install the executable file\n"
+fi
